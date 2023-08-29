@@ -1,6 +1,8 @@
 package com.workshop.demo.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity(name = "Student")
 @Table(
@@ -30,18 +32,11 @@ public class Student {
     private long id;
 
     @Column(
-            name = "first_name",
+            name = "name",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String firstName;
-
-    @Column(
-            name = "last_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String lastName;
+    private String name;
 
     @Column(
             name = "email",
@@ -51,16 +46,21 @@ public class Student {
     private String email;
 
     @Column(
-            name = "age",
+            name = "dob",
             nullable = false
     )
+    private LocalDate dob;
+
+    @Transient
     private Integer age;
 
-    public Student(String firstName, String lastName, String email, Integer age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Student(String name, String email, LocalDate dob) {
+        this.name = name;
         this.email = email;
-        this.age = age;
+        this.dob = dob;
+    }
+
+    public Student() {
     }
 
     public long getId() {
@@ -71,20 +71,12 @@ public class Student {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -95,8 +87,16 @@ public class Student {
         this.email = email;
     }
 
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
     public Integer getAge() {
-        return age;
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
     public void setAge(Integer age) {
@@ -107,9 +107,9 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", dob=" + dob +
                 ", age=" + age +
                 '}';
     }
